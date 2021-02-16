@@ -14,8 +14,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          JIRA_HOST: ${{ secrets.JIRA_HOST }}
-          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
-          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }} # See https://id.atlassian.com/manage/api-tokens
+          jiraHost: ${{ secrets.JIRA_HOST }}
+          jiraUsername: ${{ secrets.JIRA_USERNAME }}
+          jiraPassword: ${{ secrets.JIRA_PASSWORD }} # See https://id.atlassian.com/manage/api-tokens
           project: DEG
           assignee: ayberk@hazelcast.com
