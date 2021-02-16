@@ -11,6 +11,9 @@ jobs:
     steps:
      - name: Checkout
        uses: actions/checkout@master
+       with:
+        branch: master
+        github_token: ${{ secrets.GH_TOKEN }}
       
      - name: Login
        uses: atlassian/gajira-login@master
