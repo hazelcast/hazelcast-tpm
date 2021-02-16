@@ -1,21 +1,31 @@
-name: Jira Sync
 on:
   issues:
-    types: [opened, labeled, unlabeled]
-  issue_comment:
-    types: [created]
+    types: [opened]
+
+name: Test Create Issue
+
 jobs:
-  sync:
-    name: Sync Items
+  test-create-issue:
+    name: Create Issue
     runs-on: ubuntu-latest
     steps:
-      - name: Sync
-        uses: mheap/github-action-issue-to-jira@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          jiraHost: ${{ secrets.JIRA_HOST }}
-          jiraUsername: ${{ secrets.JIRA_USERNAME }}
-          jiraPassword: ${{ secrets.JIRA_PASSWORD }} # See https://id.atlassian.com/manage/api-tokens
-          project: DEG
-          assignee: ayberk@hazelcast.com
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Login
+      uses: atlassian/gajira-login@master
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+    - name: Create
+      id: create
+      uses: ./
+      with:
+        project: DEG
+        issuetype: Story
+        summary: |
+          github.event.issue.title
+        description: |
+          github.event.issue.body
