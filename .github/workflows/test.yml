@@ -1,15 +1,23 @@
 on:
-  issues:
-    types: [labeled]
+  issue_comment:
+    types: [created]
 
 name: Test Create Issue
 
 jobs:
   build:
-    if: ${{ github.event.label.name == 'to-jira' }}
     runs-on: ubuntu-latest
     name: Create Issue
     steps:
+     - name: Comment
+       id: check
+       uses: khan/pull-request-comment-trigger@master
+       with:
+         trigger: 'to-jira'
+         reaction: rocket
+       env:
+         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+     
      - name: Checkout
        uses: actions/checkout@master
       
