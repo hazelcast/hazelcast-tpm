@@ -29,4 +29,3 @@ jobs:
             Build completed for ${{ github.repository }}
          description: |
             Compare branch
-         fields: '{"customfield_10171": "test"}'
