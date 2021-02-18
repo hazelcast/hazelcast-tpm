@@ -25,7 +25,7 @@ jobs:
        with:
          project: DEG
          issuetype: Story
-         summary: |
-            Build completed for ${{ github.repository }}
+         summary: | 
+          ${{ github.event.issue.title }}
          description: |
-            Compare branch
+          ${{ github.event.issue.body }}
