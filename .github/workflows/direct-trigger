@@ -2,7 +2,7 @@ on:
   issues:
     types: [opened]
 
-name: Test Create Issue
+name: Create Issue
 
 jobs:
   build:
