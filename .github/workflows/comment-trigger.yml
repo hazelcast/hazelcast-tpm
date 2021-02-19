@@ -2,7 +2,7 @@ on:
   issue_comment:
     types: [created]
 
-name: Test Create Issue
+name: Create Issue from Comment
 
 jobs:
   build:
