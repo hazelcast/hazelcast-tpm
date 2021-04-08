@@ -32,6 +32,7 @@ jobs:
           *URL:* ${{ github.event.issue.html_url }}
           *Created By:* ${{ github.event.issue.user.login }}
           ${{ github.event.issue.body }}
+         fields: '{"Labels": "from-tpm"}'
      - name: Transition Issue
        uses: atlassian/gajira-transition@master
        with:
