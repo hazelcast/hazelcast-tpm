@@ -39,11 +39,6 @@ jobs:
         with:
           script: console.log(context)
 
-      - name: View context attribute - owner
-        uses: actions/github-script@v4
-        with:
-          script: console.log(context.repo.owner)
-
       - name: Update title of GitHub issue
         uses: actions/github-script@v4.0.2
         env:
@@ -53,10 +48,14 @@ jobs:
           github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
           script: |
             const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
+            console.log(context.issue.number)
+            console.log(context.repo.owner)
+            console.log(context.repo.repo)
+            console.log(newTitle)
             github.issues.update({
               issue_number: context.issue.number,
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               title: newTitle
             })
 
