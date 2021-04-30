@@ -41,7 +41,14 @@ jobs:
           GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
         with:
           github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
-          script: console.log(context)
+          script: |
+            const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
+            github.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repository.owner,
+              repo: context.repo.full_name,
+              title: newTitle
+            })
 
       - name: Add comment to GitHub issue
         uses: actions/github-script@v4.0.2
