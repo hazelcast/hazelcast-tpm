@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Jira Login
+        id: login
         uses: atlassian/gajira-login@v2.0.0
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
