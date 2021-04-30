@@ -2,7 +2,7 @@ on:
   issues:
     types: [labeled]
 
-name: Create Issue from Label
+name: Create Issue from added label
 
 jobs:
   build:
