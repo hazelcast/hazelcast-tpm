@@ -42,7 +42,7 @@ jobs:
       - name: View context attribute - owner
         uses: actions/github-script@v4
         with:
-          script: console.log(context.repository.owner)
+          script: console.log(context.repo.owner)
 
       - name: Update title of GitHub issue
         uses: actions/github-script@v4.0.2
