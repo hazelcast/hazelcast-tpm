@@ -34,6 +34,16 @@ jobs:
             ${{ github.event.issue.body }}
           fields: '{"labels": ["from-tpm"]}'
 
+      - name: View all context attributes
+        uses: actions/github-script@v4
+        with:
+          script: console.log(context)
+
+      - name: View context attribute - owner
+        uses: actions/github-script@v4
+        with:
+          script: console.log(context.repository.owner)
+
       - name: Update title of GitHub issue
         uses: actions/github-script@v4.0.2
         env:
