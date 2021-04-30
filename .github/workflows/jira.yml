@@ -16,7 +16,6 @@ jobs:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          JIRA_GITHUB_TOKEN: ${{ secrets.JIRA_GITHUB_TOKEN }}
 
       - name: Create Jira issue
         id: create_jira_issue
@@ -41,6 +40,7 @@ jobs:
           JIRA_ISSUE_NUMBER: ${{ steps.create_jira_issue.outputs.issue }}
           GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
         with:
+          script: console.log(context)
           github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
           script: |
             const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
