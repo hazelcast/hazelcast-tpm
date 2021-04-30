@@ -45,8 +45,8 @@ jobs:
             const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
             github.issues.update({
               issue_number: context.issue.number,
-              owner: context.repository.owner,
-              repo: context.repo.full_name,
+              owner: context.repository.owner.login,
+              repo: context.repository.name,
               title: newTitle
             })
 
