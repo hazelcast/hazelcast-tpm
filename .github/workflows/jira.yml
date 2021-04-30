@@ -34,11 +34,6 @@ jobs:
             ${{ github.event.issue.body }}
           fields: '{"labels": ["from-tpm"]}'
 
-      - name: View all context attributes
-        uses: actions/github-script@v4
-        with:
-          script: console.log(context)
-
       - name: Update title of GitHub issue
         uses: actions/github-script@v4
         env:
@@ -48,10 +43,6 @@ jobs:
           github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
           script: |
             const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
-            console.log(context.issue.number)
-            console.log(context.repo.owner)
-            console.log(context.repo.repo)
-            console.log(newTitle)
             github.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
