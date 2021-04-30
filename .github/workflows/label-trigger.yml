@@ -1,50 +1,41 @@
+name: Create Issue in Jira when to-jira label added
+
 on:
   issues:
     types: [labeled]
-
-name: Create Issue from added label
 
 jobs:
   build:
     if: ${{ github.event.label.name == 'to-jira' }}
     runs-on: ubuntu-latest
-    name: Create Issue
     steps:
-     - name: Checkout
-       uses: actions/checkout@master
-      
-     - name: Login
-       uses: atlassian/gajira-login@master
-       env:
-         JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        
-     - name: Create Jira issue
-       id: create
-       uses: atlassian/gajira-create@master
-       with:
-         project: DEG
-         issuetype: Task
-         summary: | 
-          [GH#${{ github.event.issue.number }}] ${{ github.event.issue.title }}
-         description: |
-          *Created By:* ${{ github.event.issue.user.login }}
-          {panel}
-          [Github permalink|${{ github.event.issue.html_url }}]
-          {panel}
-          ----
-          ${{ github.event.issue.body }}
-         fields: '{"labels": ["from-tpm"]}'
-     
-     - name: Transition Issue
-       uses: atlassian/gajira-transition@master
-       with:
-         issue: ${{ steps.create.outputs.issue }}
-         transition: "To Do"
-          - name: Update title of GitHub issue
-         uses: actions/github-script@v4.0.2
-         env:
+      - name: Jira Login
+        uses: atlassian/gajira-login@2.0.0
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      - name: Create Jira issue
+        id: create
+        uses: atlassian/gajira-create@master
+        with:
+          project: DEG
+          issuetype: Task
+          summary: | 
+           [GH#${{ github.event.issue.number }}] ${{ github.event.issue.title }}
+          description: |
+           {panel}
+           *Created By:* ${{ github.event.issue.user.login }}
+           [Github permalink|${{ github.event.issue.html_url }}]
+           {panel}
+           ----
+           ${{ github.event.issue.body }}
+          fields: '{"labels": ["from-tpm"]}'
+
+      - name: Update title of GitHub issue
+        uses: actions/github-script@v4.0.2
+        env:
           JIRA_ISSUE_NUMBER: ${{ steps.create_jira_issue.outputs.issue }}
           GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
         with:
@@ -57,7 +48,7 @@ jobs:
               repo: context.repo.repo,
               title: newTitle
             })
-      
+
       - name: Add comment to GitHub issue
         uses: actions/github-script@v4.0.2
         with:
