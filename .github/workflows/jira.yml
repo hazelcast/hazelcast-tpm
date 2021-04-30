@@ -40,7 +40,7 @@ jobs:
           script: console.log(context)
 
       - name: Update title of GitHub issue
-        uses: actions/github-script@v4.0.2
+        uses: actions/github-script@v4
         env:
           JIRA_ISSUE_NUMBER: ${{ steps.create_jira_issue.outputs.issue }}
           GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
@@ -60,7 +60,7 @@ jobs:
             })
 
       - name: Add comment to GitHub issue
-        uses: actions/github-script@v4.0.2
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
           script: |
