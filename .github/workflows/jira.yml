@@ -42,7 +42,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
+            const newTitle = `[${process.env.JIRA_ISSUE_NUMBER}] ${process.env.GITHUB_ORIGINAL_TITLE}`
             github.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
