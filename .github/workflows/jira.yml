@@ -40,7 +40,7 @@ jobs:
           JIRA_ISSUE_NUMBER: ${{ steps.create_jira_issue.outputs.issue }}
           GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
         with:
-          github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const newTitle = `${process.env.GITHUB_ORIGINAL_TITLE} [${process.env.JIRA_ISSUE_NUMBER}]`
             github.issues.update({
