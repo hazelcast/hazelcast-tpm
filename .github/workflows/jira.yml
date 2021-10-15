@@ -53,7 +53,7 @@ jobs:
       - name: Add comment to GitHub issue
         uses: actions/github-script@v4.0.2
         with:
-          github-token: ${{ secrets.JIRA_GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.issues.createComment({
               issue_number: context.issue.number,
