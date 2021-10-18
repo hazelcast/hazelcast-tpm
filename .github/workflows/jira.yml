@@ -35,9 +35,6 @@ jobs:
 
       - name: Update title of GitHub issue
         uses: actions/github-script@v4.0.2
-        env:
-          JIRA_ISSUE_NUMBER: ${{ steps.create_jira_issue.outputs.issue }}
-          GITHUB_ORIGINAL_TITLE: ${{ github.event.issue.title }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
