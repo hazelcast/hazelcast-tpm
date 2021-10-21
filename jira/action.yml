@@ -2,14 +2,20 @@ name: "Create Jira issue"
 description: "Create Jira Issue"
 inputs:
   JIRA_BASE_URL:
-    description: 'Jira Url'
+    description: 'JIRA BASE URL'
     required: true
   JIRA_USER_EMAIL:
-    description: 'Jira User email'
+    description: 'JIRA USER EMAIL'
     required: true
   JIRA_API_TOKEN:
-    description: 'Jira Api Token'
+    description: 'JIRA API TOKEN'
     required: true
+  TARGET_JIRA_PROJECT:
+    description: 'Enter the JIRA Project key'
+    required: true
+  JIRA_LABEL:
+    description: 'Specify the label you want to put on JIRA side'
+    required: false
 
 runs:
   using: "composite"
@@ -21,12 +27,13 @@ runs:
         JIRA_BASE_URL: ${{ inputs.JIRA_BASE_URL }}
         JIRA_USER_EMAIL: ${{ inputs.JIRA_USER_EMAIL }}
         JIRA_API_TOKEN: ${{ inputs.JIRA_API_TOKEN }}
+        
 
     - name: Create Jira issue
       id: create_jira_issue
       uses: atlassian/gajira-create@v2.0.1
       with:
-        project: HZ
+        project: ${{ inputs.TARGET_JIRA_PROJECT }}
         issuetype: Task
         summary: |
            ${{ github.event.issue.title }} [GH#${{ github.event.issue.number }}]
@@ -35,7 +42,7 @@ runs:
           *Created By:* ${{ github.event.issue.user.login }}
           [Github permalink|${{ github.event.issue.html_url }}]
           {panel}
-        fields: '{"labels": ["from-gh"]}'
+        fields: '{"labels": [${{ inputs.JIRA_LABEL }}]}'
 
     - name: Update title of GitHub issue
       uses: actions/github-script@v4.0.2
