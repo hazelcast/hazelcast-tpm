@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test composite one
-        uses: hazelcast/hazelcast-tpm/jira@v5
+        uses: hazelcast/github-jira-tool-action/jira@v1
         with:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
