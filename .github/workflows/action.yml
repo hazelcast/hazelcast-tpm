@@ -6,7 +6,7 @@ on:
 
 jobs:
   jira:
-    if: ${{ github.event.label.name == 'to-jira' }}
+    if: ${{ github.event.label.name == 'to-jirab' }}
     runs-on: ubuntu-latest
     steps:
       - name: Jira Login
