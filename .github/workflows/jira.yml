@@ -19,5 +19,5 @@ jobs:
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           TARGET_JIRA_PROJECT: DEG
-          JIRA_LABEL: GitHub, from-gh
+          JIRA_LABEL: "GitHub", "from-gh"
           ISSUE_TYPE: Bug
