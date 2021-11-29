@@ -4,6 +4,7 @@ name: Create Issue in Jira when to-jira label added
 
 on:
   issues:
+  pull_request:
     types: labeled
 
 
