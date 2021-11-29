@@ -13,3 +13,5 @@ Usage of Composite Actions:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         TARGET_JIRA_PROJECT: #Your JIRA Project Key
         JIRA_LABEL: #Your label
+
+Test line
