@@ -65,10 +65,10 @@ df_deviation.loc["Total"] = df_deviation.sum()
 df_deviation["avg_estimation"]= df_deviation.apply(lambda row: round(row.aggregatetimeoriginalestimate/row.KEY,2), axis=1)
 df_deviation["avg_timespent"]= df_deviation.apply(lambda row: round(row.timespent/row.KEY,2), axis=1)
 df_deviation["deviation_pct"]= df_deviation.apply(lambda row: round((100 * row.timespent/row.aggregatetimeoriginalestimate)-100,2), axis=1)
-
+df_deviation = df_deviation.reset_index()
 #export data to csv file
-df_issues.to_csv(desktop_path + '/deviation_raw_data.csv', sep=',', encoding='utf-8')
-df_deviation.to_csv(desktop_path + '/deviation_table.csv', sep=',', encoding='utf-8')
+#df_issues.to_csv(desktop_path + '/deviation_raw_data.csv', sep=',', encoding='utf-8')
+#df_deviation.to_csv(desktop_path + '/deviation_table.csv', sep=',', encoding='utf-8')
 
 
 jira_query = 'project = HZC AND type in (Bug) AND status = Done and timespent > 0 ORDER BY created DESC'
@@ -118,9 +118,34 @@ bugfix_list = []
 bugfix_list.append([issue_count, round(df_bugs['timespent'].sum(),2), round(df_bugs['timespent'].sum()/issue_count,2)])
 df_bugfix_time = pd.DataFrame(bugfix_list,columns = ['Number of Issues','Total Time Spent','Average Time Spent'])
 
-df_bugs.to_csv(desktop_path + '/bugs_raw_data.csv', sep=',', encoding='utf-8')
-df_bugfix_time.to_csv(desktop_path + '/bugs_table.csv', sep=',', encoding='utf-8')
+#df_bugs.to_csv(desktop_path + '/bugs_raw_data.csv', sep=',', encoding='utf-8')
+#df_bugfix_time.to_csv(desktop_path + '/bugs_table.csv', sep=',', encoding='utf-8')
 
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+
+SERVICE_ACCOUNT_FILE = 'keys.json'
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
+creds = None
+creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+# The ID spreadsheet.
+SAMPLE_SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'
+
+service = build('sheets', 'v4', credentials=creds)
+
+# Call the Sheets API
+sheet = service.spreadsheets()
+request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, 
+                                range="Deviation Raw!A1", valueInputOption= "USER_ENTERED", body={"values":[df_issues.columns.values.tolist()] + df_issues.values.tolist()}).execute()
+request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, 
+                                range="Deviation Table!A1", valueInputOption= "USER_ENTERED", body={"values":[df_deviation.columns.values.tolist()] + df_deviation.values.tolist()}).execute()
+request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, 
+                                range="Bugfix Raw!A1", valueInputOption= "USER_ENTERED", body={"values":[df_bugs.columns.values.tolist()] + df_bugs.values.tolist()}).execute()
+request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, 
+                                range="Bugfix Table!A1", valueInputOption= "USER_ENTERED", body={"values":[df_bugfix_time.columns.values.tolist()] + df_bugfix_time.values.tolist()}).execute()
 
 
 
