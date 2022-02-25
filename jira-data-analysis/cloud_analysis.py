@@ -16,16 +16,17 @@ jira_query = 'project = HZC AND type in (Bug, Story, Task) AND status = Done and
 #run query to get result lenght
 results = jira.search_issues(jql_str=jira_query,maxResults=100000)
 issue_count = results.total
-print("Total issue count: " + str(issue_count))
+print("Total issue count for deviation data: " + str(issue_count))
 iter_count = int(((issue_count - issue_count % 100) / 100) + 1)
+print("Number of iterations needed: " + str(iter_count))
 issues_deviation = []
 
 
 #iterate over query to store records in a python list
 while iter_count > 0:
-    print("Starting the query from: " + str(((iter_count -1) * 100)))
+    print(str(iter_count) + " more iteration(s) left")
+
     for each in jira.search_issues(jql_str= jira_query,startAt=((iter_count -1) * 100),maxResults=100):
-       
         issues_deviation.append([
             each.key, 
             each.fields.issuetype.name, 
@@ -77,16 +78,17 @@ jira_query = 'project = HZC AND type in (Bug) AND status = Done and timespent > 
 #run query to get result lenght
 results = jira.search_issues(jql_str=jira_query,maxResults=100000)
 issue_count = results.total
-print("Total issue count: " + str(issue_count))
+print("Total issue count for bugfix data: " + str(issue_count))
 iter_count = int(((issue_count - issue_count % 100) / 100) + 1)
+print("Number of iterations needed: " + str(iter_count))
+
 issues_bugs = []
 
 
 #iterate over query to store records in a python list
 while iter_count > 0:
-    print("Starting the query from: " + str(((iter_count -1) * 100)))
+    print(str(iter_count) + " more iteration(s) left")
     for each in jira.search_issues(jql_str= jira_query,startAt=((iter_count -1) * 100),maxResults=100):
-       
         issues_bugs.append([
             each.key, 
             each.fields.issuetype.name, 
@@ -121,6 +123,8 @@ df_bugfix_time = pd.DataFrame(bugfix_list,columns = ['Number of Issues','Total T
 #df_bugs.to_csv(desktop_path + '/bugs_raw_data.csv', sep=',', encoding='utf-8')
 #df_bugfix_time.to_csv(desktop_path + '/bugs_table.csv', sep=',', encoding='utf-8')
 
+print("Data ready, now writing into Google Sheets")
+
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
@@ -132,7 +136,7 @@ creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 # The ID spreadsheet.
-SAMPLE_SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'
+SAMPLE_SPREADSHEET_ID = '1OvtRjIEBsfBPd5iqCOnlcQDy_OpTSMUxYz8BJslXgJY'
 
 service = build('sheets', 'v4', credentials=creds)
 
@@ -148,6 +152,7 @@ request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                 range="Bugfix Table!A1", valueInputOption= "USER_ENTERED", body={"values":[df_bugfix_time.columns.values.tolist()] + df_bugfix_time.values.tolist()}).execute()
 
 
+print("Done")
 
 
 
