@@ -10,7 +10,7 @@ jiraOptions = {'server': "https://hazelcast.atlassian.net"}
 jira = JIRA(options=jiraOptions, basic_auth=("YOUR_COMPANY_EMAIL", "YOUR_TOKEN"))
 
 #insert your query written in JQL
-jira_query = 'project = HZC AND type in (Bug, Story, Task) AND status = Done and originalEstimate > 0 and timespent > 0 ORDER BY created DESC'
+jira_query = 'project = HZC AND type in (Bug, Story, Task) AND status = Done and originalEstimate > 0 and timespent > 0 AND (labels not in (notJiraAnalysis) OR labels is EMPTY) ORDER BY created DESC'
 
 
 #run query to get result lenght
@@ -71,8 +71,7 @@ df_deviation = df_deviation.reset_index()
 #df_issues.to_csv(desktop_path + '/deviation_raw_data.csv', sep=',', encoding='utf-8')
 #df_deviation.to_csv(desktop_path + '/deviation_table.csv', sep=',', encoding='utf-8')
 
-
-jira_query = 'project = HZC AND type in (Bug) AND status = Done and timespent > 0 ORDER BY created DESC'
+jira_query = 'project = HZC AND type in (Bug) AND status = Done and timespent > 0 AND (labels not in (notJiraAnalysis) OR labels is EMPTY) ORDER BY created DESC'
 
 
 #run query to get result lenght
