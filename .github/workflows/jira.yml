@@ -29,5 +29,5 @@ jobs:
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           TARGET_JIRA_PROJECT: DEG
-          JIRA_LABEL: Java,Team
+          JIRA_LABEL: Java","Team
           ISSUE_TYPE: Bug
