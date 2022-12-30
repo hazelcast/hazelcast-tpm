@@ -26,14 +26,12 @@ jobs:
         id: 00_team_label
       - uses: actions/github-script@v2.0.0
       - uses: actions/github-script@0.9.0
-        env:
-          TEAM_LABEL: ${{ secrets.JIRA_ISSUE_LABEL }}
         with:
           result-encoding: string
           script: |
             const labels = ${{ toJson(github.event.issue.labels) }}
             if(labels.find(label => label.name == "Team:**")) {
-              return echo $TEAM_LABEL.split('Team: ')[0] >> $GITHUB_OUTPUT
+              return echo label.split('Team: ')[0] >> $GITHUB_OUTPUT
             }
   
   jira1:
