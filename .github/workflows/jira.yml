@@ -4,6 +4,19 @@ on:
   issues:
     types: labeled
 
+const labels = ${{ github.event.issue.labels }}
+
+if(labels.find(label => contains(github.event.issue.labels.*.name, 'Team: '))) {
+              
+              uses: actions/github-script@0.9.0
+              with:
+              script: |
+              const team_label = github.event.issue.labels.*.name.split('Team: ')[1]
+              return team_label
+            } else {
+              return null
+            }
+
 
 jobs:
   jira1:
