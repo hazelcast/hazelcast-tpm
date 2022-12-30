@@ -17,6 +17,24 @@ jobs:
           script: |
             echo $TEAM_LABEL.split('Team: ')[0] >> $GITHUB_OUTPUT
         id: team_label
+        
+  jira00:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if GitHub Issue has JIRA_ISSUE_LABEL
+        if: contains(github.event.issue.labels.*.name, 'Team')
+        id: 00_team_label
+      - uses: actions/github-script@v2.0.0
+      - uses: actions/github-script@0.9.0
+        env:
+          TEAM_LABEL: ${{ secrets.JIRA_ISSUE_LABEL }}
+        with:
+          result-encoding: string
+          script: |
+            const labels = ${{ toJson(github.event.issue.labels) }}
+            if(labels.find(label => label.name == "Team:**")) {
+              return echo $TEAM_LABEL.split('Team: ')[0] >> $GITHUB_OUTPUT
+            }
   
   jira1:
     if: ${{ github.event.label.name == 'to-jira' }}
