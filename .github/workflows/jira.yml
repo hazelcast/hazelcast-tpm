@@ -15,8 +15,7 @@ jobs:
         uses: actions/github-script@0.9.0
         with:
           script: |
-            $TEAM_LABEL = $TEAM_LABEL.split('Team: ')[1]
-            echo $TEAM_LABEL >> $GITHUB_OUTPUT
+            echo $TEAM_LABEL.split('Team: ')[0] >> $GITHUB_OUTPUT
         id: team_label
   
   jira1:
