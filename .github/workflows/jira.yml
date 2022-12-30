@@ -4,21 +4,21 @@ on:
   issues:
     types: labeled
 
-const labels = ${{ github.event.issue.labels }}
-
-if(labels.find(label => contains(github.event.issue.labels.*.name, 'Team: '))) {
-              
-              uses: actions/github-script@0.9.0
-              with:
-              script: |
-              const team_label = github.event.issue.labels.*.name.split('Team: ')[1]
-              return team_label
-            } else {
-              return null
-            }
-
-
 jobs:
+  jira0:
+    if: contains(github.event.issue.labels.*.name, 'Team')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture Team Label
+        env: 
+          TEAM_LABEL: ${{ toJson(github.event.issue.labels) }}.find(label => contains(github.event.pull_request.labels.*.name, 'Team')))
+        uses: actions/github-script@0.9.0
+        with:
+          script: |
+            $TEAM_LABEL = $TEAM_LABEL.split('Team: ')[1]
+            echo $TEAM_LABEL >> $GITHUB_OUTPUT
+        id: team_label
+  
   jira1:
     if: ${{ github.event.label.name == 'to-jira' }}
     runs-on: ubuntu-latest
@@ -42,5 +42,5 @@ jobs:
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           TARGET_JIRA_PROJECT: DEG
-          JIRA_LABEL: Java","Team
+          JIRA_LABEL: Java","${{steps.team_label.outputs.*}}
           ISSUE_TYPE: Bug
