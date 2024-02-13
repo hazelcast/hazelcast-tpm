@@ -17,7 +17,7 @@ jobs:
           script: |
             const labels = ${{ toJson(github.event.issue.labels) }}
             const teamLabel = labels.find(label => label.name.includes('Team: '))?.name || ""
-            return teamLabel      
+            return teamLabel.replace('Team: ','')      
       - name: Test composite one
         uses: hazelcast/github-jira-tool-action@main
         with:
