@@ -5,7 +5,7 @@ on:
     types: labeled
 
 jobs:
-  jira1:
+  createJiraIssue:
     if: ${{ github.event.label.name == 'to-jira' }}
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +17,9 @@ jobs:
           script: |
             const labels = ${{ toJson(github.event.issue.labels) }}
             const teamLabel = labels.find(label => label.name.includes('Team: '))?.name || ""
-            return teamLabel.replace('Team: ','')
+            const team = teamLabel.replace('Team: ','')
+            console.log("Team: " + team)
+            return team
       - name: Identify issue type
         id: get-issue-type
         uses: actions/github-script@v6
@@ -28,9 +30,10 @@ jobs:
             const issueType = labels.some(label => label.name.includes('Test-Failure')) 
               ? "Test Failure" 
               : "Bug"
+            console.log("Issue type: " + issueType)  
             return issueType           
-      - name: Test composite one
-        uses: hazelcast/github-jira-tool-action@main
+      - name: Create jira issue
+        uses: hazelcast/github-jira-tool-action@v3.3.1
         with:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
@@ -39,12 +42,12 @@ jobs:
           ISSUE_TYPE: ${{ steps.get-issue-type.outputs.result }}
           JIRA_LABEL: from-gh
           TEAM_NAME: ${{ steps.get-team.outputs.result }}
-  jira2:
+  createClientJiraIssue:
     if: ${{ github.event.label.name == 'to-client-jira' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Test composite one
-        uses: hazelcast/github-jira-tool-action@main
+      - name: Create jira issue
+        uses: hazelcast/github-jira-tool-action@v3.3.1
         with:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
