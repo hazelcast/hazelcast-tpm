@@ -52,4 +52,3 @@ jobs:
           TARGET_JIRA_PROJECT: API
           JIRA_LABEL: Java
           ISSUE_TYPE: Bug
-          TEAM_NAME: CLIENT
