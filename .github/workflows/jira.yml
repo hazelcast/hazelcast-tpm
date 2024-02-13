@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test composite one
-        uses: hazelcast/github-jira-tool-action@v3.2.0
+        uses: hazelcast/github-jira-tool-action@main
         with:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
@@ -52,3 +52,4 @@ jobs:
           TARGET_JIRA_PROJECT: API
           JIRA_LABEL: Java
           ISSUE_TYPE: Bug
+          TEAM_NAME: CLIENT
