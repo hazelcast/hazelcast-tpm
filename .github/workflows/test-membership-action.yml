@@ -1,0 +1,26 @@
+# An action used for testing the "membership" action
+name: Test "membership" action
+on:
+  workflow_dispatch:
+    inputs:
+      GH_TOKEN:
+        required: true
+      MEMBER_NAME:
+        required: true
+
+jobs:
+  test-membership:
+    name: Test Hazelcast Membership
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: test-membership
+        uses: ./membership
+        with:
+          organization-name: hazelcast
+          member-name: ${{ inputs.MEMBER_NAME }}
+          token: ${{ inputs.GH_TOKEN }}
+
+      - shell: bash
+        run: echo "${{ inputs.MEMBER_NAME }} `is-member`? ${{ steps.test-membership.outputs.is-member }}"

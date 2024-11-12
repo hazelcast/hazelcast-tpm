@@ -8,17 +8,23 @@ inputs:
     required: true
 outputs:
   check-result:
-    description: "Membership check result"
+    description: Membership check result
     value: ${{ steps.membership-check.outputs.check-result }}
 runs:
-  using: "composite"
+  using: composite
   steps:
     - id: membership-check
       shell: bash
       run: |-
-        response=$(curl -v -H "Authorization: token ${{ inputs.token }}" --write-out '%{http_code}' --silent --output /dev/null "https://api.github.com/orgs/${{ inputs.organization-name }}/memberships/${{ inputs.member-name }}")
-        if [[ "$response" -ne 200 ]] ; then
+        output=$(gh api --silent "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}")
+        status=$?
+
+        echo "::debug::${output}"
+
+        if [[ ${status} -ne 0 ]] ; then
           echo "::set-output name=check-result::false"
         else
           echo "::set-output name=check-result::true"
         fi
+      env:
+        GH_TOKEN: ${{ inputs.token }}
