@@ -16,7 +16,7 @@ runs:
     - id: membership-check
       shell: bash
       run: |-
-        output=$(gh api --silent "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}")
+        output=$(gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}")
         status=$?
 
         echo "::debug::${output}"
