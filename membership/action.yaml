@@ -16,12 +16,7 @@ runs:
     - id: membership-check
       shell: bash
       run: |-
-        output=$(gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}")
-        status=$?
-
-        echo "::debug::${output}"
-
-        if [[ ${status} -ne 0 ]] ; then
+        if ! gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}" ; then
           echo "::set-output name=check-result::false"
         else
           echo "::set-output name=check-result::true"
