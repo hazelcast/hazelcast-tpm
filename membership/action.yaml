@@ -17,9 +17,9 @@ runs:
       shell: bash
       run: |-
         if [[ "${{ inputs.organization-name }}" == "${{ inputs.member-name }}" ]] || gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}"; then
-          echo "name=check-result::true" >> ${GITHUB_OUTPUT}
+          echo "check-result=true" >> ${GITHUB_OUTPUT}
         else
-          echo "name=check-result::false" >> ${GITHUB_OUTPUT}
+          echo "check-result=false" >> ${GITHUB_OUTPUT}
         fi
       env:
         GH_TOKEN: ${{ inputs.token }}
