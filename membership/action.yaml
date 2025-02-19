@@ -16,7 +16,7 @@ runs:
     - id: membership-check
       shell: bash
       run: |-
-        if [[ "${{ inputs.organization-name }}" == "${{ inputs.member-name }}" ]] || gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}"; then
+        if [[ "${{ inputs.organization-name }}" == "${{ inputs.member-name }}" ]] || gh api "orgs/${{ inputs.organization-name }}/members/${{ inputs.member-name }}" ]]; then
           echo "check-result=true" >> ${GITHUB_OUTPUT}
         else
           echo "check-result=false" >> ${GITHUB_OUTPUT}
